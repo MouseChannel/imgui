@@ -17,9 +17,15 @@
 //#define IM_ASSERT(_EXPR)  MyAssert(_EXPR)
 //#define IM_ASSERT(_EXPR)  ((void)(_EXPR))     // Disable asserts
 
-//---- Define attributes of all API symbols declarations, e.g. for DLL under Windows.
-//#define IMGUI_API __declspec( dllexport )
-//#define IMGUI_API __declspec( dllimport )
+//---- Define attributes of all API symbols declarations, e.g. for DLL under Windows
+// Using dear imgui via a shared library is not recommended, because of function call overhead and because we don't guarantee backward nor forward ABI compatibility.
+#ifdef IMGUI_EXPORTS
+    /* We are building this library */
+#  define IMGUI_API __declspec(dllexport)
+#else
+    /* We are using this library */
+#  define IMGUI_API __declspec(dllimport)
+#endif
 
 //---- Don't define obsolete functions/enums names. Consider enabling from time to time after updating to avoid using soon-to-be obsolete function/names.
 //#define IMGUI_DISABLE_OBSOLETE_FUNCTIONS
